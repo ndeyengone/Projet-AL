@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %} Changed {% endblock %}
+{% block content %}
+<br/>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron p-3">
+                <h2>Gestion Des Utilisateurs <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal" href="/create-user">Ajouter un nouvel utilisateur </button></h2>
+
+                <table class="table table-hover table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Mot de Passe</th>
+                        <th>Profil</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for user in users %}
+                        <tr>
+                            <td>{{user.id}}</td>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.password}}</td>
+                            <td>{{user.profil}}</td>
+                            <td><a href="/update/{{user.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{user.id}}">Modifier</a>
+                                <a href="" class="btn btn-danger btn-xs" onClick="return confirm('Voulez vous vraiment supprimer cet utilisateur?')">Supprimer</a></td>
+                        </tr>
+                        <div id="modaledit" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Modifier les informations </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="POST">
+                                            <div class="form-group">
+                                                <label>Prénom:</label>
+                                                <input type="hidden" name="id" value="id"/>
+                                                <input type="text" class="form-control" name="firstname" value="Ndeye Ngone"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nom:</label>
+                                                <input type="text" class="form-control" name="lastname" value="Ndiaye"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email:</label>
+                                                <input type="email" class="form-control" name="email" value="ngndiaye@gmail.com"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Profil:</label>
+                                                <select class="form-control" aria-label=".form-select-lg example" name="profil">
+                                                    <option value="administrateur">Administrateur</option>
+                                                    <option value="editeur">Editeur</option>
+                                                </select>
+                                            </div>
+                                            <br/>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Modifier</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </table>
+            </div>
+            <!--Modele ajouter des utilisateurs-->
+            <div id="mymodal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Ajouter un utilisateur</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('crud.add_user')}}" method="POST">
+                                <div class="form-group">
+                                    <label>Prénom:</label>
+                                    <input type="text" class="form-control" name="firstname" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nom:</label>
+                                    <input type="text" class="form-control" name="lastname" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="email" class="form-control" name="email" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mot de passe</label>
+                                    <input type="password" class="form-control" id="password1" name="password1" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mot de passe (Confirmation)</label>
+                                    <input type="password" class="form-control" id="password2" name="password2" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Profil:</label>
+                                    <select class="form-control" aria-label=".form-select-lg example" name="profil" required="1">
+                                        <option value="administrateur">Administrateur</option>
+                                        <option value="editeur">Editeur</option>
+                                      </select>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Ajouter un utilisateur</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Modele modifier des utilisateurs-->
+            <div id="modaledit{{user.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Ajouter un utilisateur</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('crud.add_user')}}" method="POST">
+                                <div class="form-group">
+                                    <label>Prénom:</label>
+                                    <input type="text" class="form-control" name="firstname" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nom:</label>
+                                    <input type="text" class="form-control" name="lastname" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="email" class="form-control" name="email" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mot de passe</label>
+                                    <input type="password" class="form-control" id="password1" name="password1" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mot de passe (Confirmation)</label>
+                                    <input type="password" class="form-control" id="password2" name="password2" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Profil:</label>
+                                    <select class="form-control" aria-label=".form-select-lg example" name="profil" required="1">
+                                        <option value="administrateur">Administrateur</option>
+                                        <option value="editeur">Editeur</option>
+                                      </select>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Ajouter un utilisateur</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
